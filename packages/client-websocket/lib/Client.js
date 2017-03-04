@@ -12,35 +12,28 @@ const NS_FRAMING = 'urn:ietf:params:xml:ns:xmpp-framing'
  * XMPP over WebSocket https://tools.ietf.org/html/rfc7395
 */
 
-class Client extends Connection {
-  // https://tools.ietf.org/html/rfc7395#section-3.4
-  responseHeader (el, domain) {
-    const {name, attrs} = el
-    return (
-      name === 'open' &&
-      attrs.version === '1.0' &&
-      attrs.xmlns === NS_FRAMING &&
-      attrs.from === domain &&
-      attrs.id
-    )
-  }
-
-  // https://tools.ietf.org/html/rfc7395#section-3.4
-  header (domain, lang) {
-    return xml`<open ${lang ? `xml:lang='${lang}'` : ''} version='1.0' xmlns='${NS_FRAMING}' to='${domain}'/>`
-  }
-
+class ClientWebSocket extends Connection {
   // https://tools.ietf.org/html/rfc7395#section-3.6
   footer () {
-    return xml`<close xmlns="${NS_FRAMING}"/>`
+    return xml.Element('close', {
+      xmlns: NS_FRAMING
+    })
   }
 
-  static match (uri) {
-    return uri.match(/^wss?:\/\//) ? uri : null
+  // https://tools.ietf.org/html/rfc7395#section-3.4
+  headerElement () {
+    const el = super.headerElement()
+    el.name = 'open'
+    el.attrs.xmlns = NS_FRAMING
+    return el
+  }
+
+  socketParameters (uri) {
+    return uri.match(/^wss?:\/\//) ? uri : undefined
   }
 }
 
-Client.prototype.Socket = Socket
-Client.prototype.NS = 'jabber:client'
+ClientWebSocket.prototype.Socket = Socket
+ClientWebSocket.prototype.NS = 'jabber:client'
 
-module.exports = Client
+module.exports = ClientWebSocket
