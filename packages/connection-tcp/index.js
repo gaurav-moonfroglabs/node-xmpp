@@ -2,7 +2,6 @@
 
 const Socket = require('net').Socket
 const Connection = require('@xmpp/connection')
-const {Element} = require('@xmpp/xml')
 
 const NS_STREAM = 'http://etherx.jabber.org/streams'
 
@@ -29,11 +28,11 @@ class TCP extends Connection {
   // https://xmpp.org/rfcs/rfc6120.html#streams-open
   header (el) {
     const frag = el.toString()
-    return `<?xml version='1.0'?>` + frag.substr(0, frag.length - 2) + '>'
+    return `<?xml version='1.0'?>` + frag.substr(0, frag.length - 2) + '>'
   }
 
   // https://xmpp.org/rfcs/rfc6120.html#streams-close
-  footer() {
+  footer () {
     return '</stream:stream>'
   }
 }

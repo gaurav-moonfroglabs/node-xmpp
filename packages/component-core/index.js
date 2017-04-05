@@ -2,7 +2,7 @@
 
 const Connection = require('@xmpp/connection-tcp')
 const crypto = require('crypto')
-const {tagString, tag} = require('@xmpp/xml')
+const xml = require('@xmpp/xml')
 
 /*
  * References
@@ -48,7 +48,7 @@ class Component extends Connection {
   authenticate (id, password) {
     const hash = crypto.createHash('sha1')
     hash.update(id + password, 'binary')
-    return this.sendReceive(tag`<handshake>${hash.digest('hex')}</handshake>`).then((el) => {
+    return this.sendReceive(xml`<handshake>${hash.digest('hex')}</handshake>`).then((el) => {
       if (el.name !== 'handshake') {
         throw new Error('unexpected stanza')
       }

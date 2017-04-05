@@ -35,6 +35,7 @@ test.cb('component', t => {
 
   entity.start('xmpp://node-xmpp.localhost:5347')
     .then((jid) => {
+      console.log('foobar')
       t.true(jid instanceof xmpp.jid.JID)
       t.is(jid.toString(), 'node-xmpp.localhost')
     })

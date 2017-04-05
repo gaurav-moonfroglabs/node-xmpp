@@ -27,6 +27,7 @@ addons:
     - lua-sec # tls
   hosts:
     - component.localhost
+    - node-xmpp.localhost
 
 before_install:
   - sudo service prosody stop

@@ -329,7 +329,7 @@ class Connection extends EventEmitter {
   headerElement () {
     return new xml.Element('', {
       version: '1.0',
-      xmlns: this.NS,
+      xmlns: this.NS
     })
   }
   footer (el) {
